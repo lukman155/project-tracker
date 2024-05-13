@@ -10,14 +10,6 @@ app = Flask(__name__)
 api = Api(app)
 
 # Create Database
-import sqlite3 as sql
-# conn = sql.connect('database.db')
-# cur = conn.cursor()
-# cur.execute("Create table if not exists Contractor(id INTEGER PRIMARY KEY, first_name VARCHAR(80), last_name VARCHAR(80),project VARCHAR(80))")
-# cur.execute("INSERT INTO Contractor (first_name, last_name, project)  VALUES (?,?,?)",['Bob','Builder','Galaxy'])
-# conn.commit()
-
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -50,14 +42,12 @@ class Project(db.Model):
 
 class GetUsers(Resource):
     def get(self):
-        # users = cur.execute("SELECT * FROM Contractor")
+        # Query all data from DB
         users = User.query.all()
         user_list = []
-        # for user in users.fetchall():
         for user in users:
             user_data = {'id':user.id,'name':user.name,'email':user.email, 'role':user.role,"lga":user.lga,'state':user.state}
             user_list.append(user_data)
-            # print(user_list)
         return {'users':user_list}, 200
 
 class GetProjects(Resource):

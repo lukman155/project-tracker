@@ -17,7 +17,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
-
 class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer,primary_key=True)
@@ -27,6 +26,7 @@ class User(db.Model):
     role = db.Column(db.Integer, nullable=False)
     lga = db.Column(db.String(80), nullable=False)
     state = db.Column(db.String(80), nullable=False)
+
 
 class Project(db.Model):
     __tablename__ = 'project'
@@ -50,6 +50,7 @@ class GetUsers(Resource):
             user_list.append(user_data)
         return {'users':user_list}, 200
 
+
 class GetProjects(Resource):
     def get(self):
         projects = Project.query.all()
@@ -70,6 +71,7 @@ class AddUser(Resource):
         else:
             return {"error":"error must be JSON"}
 
+
 class AddProject(Resource):
     def post(self): 
         if request.is_json:
@@ -79,7 +81,8 @@ class AddProject(Resource):
             return make_response(jsonify({"id":b.id,"name":b.name,"location":b.location, "user_id":b.user_id}), 201)
         else:
             return {"error":"error must be JSON"}
-        
+
+
 class DeleteUser(Resource):
     def delete(self,id):
         if request.is_json:
@@ -90,7 +93,8 @@ class DeleteUser(Resource):
             db.session.delete(user)
             db.session.commit()
             return f"user with ID:{id} is deleted"
-    
+
+
 class UpdateUser(Resource):
     def put(self, id):
         if request.is_json:
@@ -101,12 +105,10 @@ class UpdateUser(Resource):
                 user.first_name=request.json['first_name'] 
                 user.last_name=request.json['last_name']
                 user.project=request.json['project']
-
                 db.session.commit()
                 return f"updated", 200
         else:
             return {"error":"error must be JSON"}
-
 
 
 api.add_resource(GetUsers,'/users')

@@ -48,7 +48,7 @@ class GetUsers(Resource):
         for user in users:
             user_data = {'id':user.id,'name':user.name,'email':user.email, 'role':user.role,"lga":user.lga,'state':user.state}
             user_list.append(user_data)
-        return {'users':user_list}, 200
+        return {'users':user_list}, 200 
 
 
 class GetProjects(Resource):

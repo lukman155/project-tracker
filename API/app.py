@@ -67,10 +67,10 @@ class GetProjects(Resource):
 class AddUser(Resource):
     def post(self): 
         if request.is_json:
-            b = User(name=request.json['name'], email=request.json['email'],password=request.json['password'],role=request.json['role'],lga=request.json['lga'],state=request.json['state'])
+            b = User(name=request.json["name"], email=request.json["email"],password=request.json["password"],role=request.json["role"],lga=request.json["lga"],state=request.json["state"])
             db.session.add(b)
             db.session.commit()
-            return make_response(jsonify({id : b.id, 'name' : b.name,'email' : b.email, 'role' : b.role,'password':b.password,"lga":b.lga,"state":b.state}), 201)
+            return make_response(jsonify({id : b.id, "name":b.name,"email": b.email, "role" : b.role,"password":b.password,"lga":b.lga,"state":b.state}), 201)
         else:
             return {"error":"error must be JSON"}
 
@@ -78,7 +78,7 @@ class AddUser(Resource):
 class AddProject(Resource):
     def post(self): 
         if request.is_json:
-            b = Project(name="Borehole",location="Zaria",user_id=1)
+            b = Project(name=request.json["name"],location=request.json["location"],user_id=request.json["user_id"])
             db.session.add(b)
             db.session.commit()
             return make_response(jsonify({"id":b.id,"name":b.name,"location":b.location, "user_id":b.user_id}), 201)

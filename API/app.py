@@ -113,13 +113,28 @@ class UpdateUser(Resource):
         else:
             return {"error":"error must be JSON"}
 
+# localhost:5000/create
 api.add_resource(CreateT,'/create')
+
+# localhost:5000/users
 api.add_resource(GetUsers,'/users')
+
+# localhost:5000/projects
 api.add_resource(GetProjects,'/projects')
+
+# localhost:5000/addp
 api.add_resource(AddProject,'/addp')
+
+# localhost:5000/addu
 api.add_resource(AddUser,"/addu")
+
+# localhost:5000/deleteu/1
 api.add_resource(DeleteUser,'/deleteu/<int:id>')
+
+# localhost:5000/updateu/1
 api.add_resource(UpdateUser,'/updateu/<int:id>')
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

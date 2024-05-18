@@ -11,7 +11,7 @@ api = Api(app)
 
 # Create Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Create sqlalchemy mapper
 db = SQLAlchemy(app)
@@ -39,6 +39,9 @@ class Project(db.Model):
     def __repr__(self) -> str:
         return self.Project
 
+class CreateT(Resource):
+    def get(self):
+        db.create_all()
 
 class GetUsers(Resource):
     def get(self):
@@ -110,7 +113,7 @@ class UpdateUser(Resource):
         else:
             return {"error":"error must be JSON"}
 
-
+api.add_resource(CreateT,'/create')
 api.add_resource(GetUsers,'/users')
 api.add_resource(GetProjects,'/projects')
 api.add_resource(AddProject,'/addp')

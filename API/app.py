@@ -14,7 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Create sqlalchemy mapper
-db = SQLAlchemy(app)
+db = SQLAlchemy(app) 
 
 
 class User(db.Model):

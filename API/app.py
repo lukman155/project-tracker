@@ -3,6 +3,7 @@ from flask import Flask, request, make_response, jsonify
 from datetime import datetime
 from flask_restful import Api, Resource
 
+
 # Assuming you have already created your Flask app instance
 app = Flask(__name__)
 
@@ -11,6 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 api = Api(app)
+
 # Create an instance of SQLAlchemy
 db = SQLAlchemy(app)
 
@@ -53,11 +55,7 @@ class UserRoles(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     role = db.Column(db.String(20), nullable=False)
 
-
-class CreateTables(Resource):
-    def get(self):
-        db.create_all()
-
+        
 
 class GetUsers(Resource):
     def get(self):
@@ -99,13 +97,15 @@ class AddUser(Resource):
 class AddProject(Resource):
     def post(self):
         if request.is_json:
+            created_at = datetime.strptime(request.json['created_at'], '%Y-%m-%d %H:%M:%S')
+            updated_at = datetime.strptime(request.json['updated_at'], '%Y-%m-%d %H:%M:%S')
             b = Project(name=request.json['name'], description=request.json['description'],
                         category=request.json['category'], gps_location=request.json['gps_location'],
-                        owner_id=request.json['owner_id'], created_at=request.json['created_at'],
-                        updated_at=request.json['updated_at'])
+                        owner_id=request.json['owner_id'], created_at=created_at,
+                        updated_at= updated_at)
             db.session.add(b)
             db.session.commit()
-            return make_response(jsonify({"id": b.id, "name": b.name, "location": b.location, "user_id": b.user_id}),
+            return make_response(jsonify({"id": b.id, "name": b.name, "location": b.gps_location, "user_id": b.owner_id}),
                                  201)
         else:
             return {"error": "error must be JSON"}
@@ -140,7 +140,13 @@ class DeleteUser(Resource):
 
 
 # Add API endpoint
-api.add_resource(CreateTables, '/api/create')
 api.add_resource(GetUsers, "/api/users")
 api.add_resource(GetProjects, "/api/projects")
 api.add_resource(AddProject, "/api/add/project")
+
+with app.app_context():
+    db.create_all()
+
+if __name__ == '__main__':
+    app.run(debug=True)
+

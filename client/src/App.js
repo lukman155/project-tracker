@@ -1,11 +1,11 @@
 import './App.scss';
-import RegistrationForm from './components/RegistrationForm';
+import Registration from './Pages/registration';
 
 function App() {
   return (
     <div className="App">
       <section className='register'>
-          <RegistrationForm />    
+          <Registration />    
       </section>
     </div>
   );

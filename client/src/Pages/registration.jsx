@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './registrationForm.scss'
+import './registration.scss'
 
-const RegistrationForm = () => {
+const Registration = () => {
   const [formData, setFormData] = useState({
     name: '',
     phoneNumber: '',
@@ -29,10 +29,13 @@ const RegistrationForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <section>
+
     <div className='header'>
       <h1>Register</h1>
     </div>
+    
+    <form onSubmit={handleSubmit}>
         <div className='dp-container'>
           <img alt='' src='person.png' className='dp'></img>
         </div>
@@ -74,7 +77,8 @@ const RegistrationForm = () => {
       </label>
       <button className='submit-btn' type="submit">Register</button>
     </form>
+    </section>
   );
 };
 
-export default RegistrationForm;
+export default Registration;

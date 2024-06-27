@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './registration.scss'
+import './register.scss'
 
-const Registration = () => {
+export default function Register() {
   const [formData, setFormData] = useState({
     name: '',
     phoneNumber: '',
@@ -36,9 +36,9 @@ const Registration = () => {
     </div>
     
     <form onSubmit={handleSubmit}>
-        <div className='dp-container'>
-          <img alt='' src='person.png' className='dp'></img>
-        </div>
+      <div className='dp-container'>
+        <img alt='' src='person.png' className='dp'></img>
+      </div>
       <label>
         Your Name:
         <input type="text" name="name" value={formData.name} onChange={handleChange} />
@@ -81,4 +81,3 @@ const Registration = () => {
   );
 };
 
-export default Registration;

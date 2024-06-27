@@ -1,0 +1,64 @@
+section {
+  background-color: rgb(245, 247, 250);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 1em 1.5em;
+  gap: 1em;
+  color: rgb(35, 35, 35);
+  padding-bottom: 5em;
+}
+
+.header {
+  padding: 1em 0;
+  background-color: white;
+}
+.header > h1 {
+  text-align: center;
+}
+
+.dp-container {
+  align-self: center;
+  width: 150px;
+}
+
+.dp {
+  width: 100%;
+  height: 100%;
+}
+
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+input {
+  padding: .2em .8em;
+  color: #718EBF;
+  width: 100%;
+  height: 24px;
+  border-radius: 5px;
+  border: 1px solid #dfeaf2;
+} 
+
+input:focus {
+  outline: 2px solid #add3ee;
+}
+// #275BE5
+
+
+.submit-btn {
+  margin-top: 1em;
+  align-self: center;
+  width: 100%;
+  padding: 1em 2em;
+  background: linear-gradient(to right, #12338A, #2658E0);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 1em;
+}

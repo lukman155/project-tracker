@@ -1,11 +1,13 @@
 import './App.scss';
-import Registration from './Pages/registration';
+import Register from './Pages/register';
+import Login from './Pages/login';
 
 function App() {
   return (
     <div className="App">
       <section className='register'>
-          <Registration />    
+          <Register />    
+          <Login/>    
       </section>
     </div>
   );

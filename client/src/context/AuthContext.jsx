@@ -1,6 +1,5 @@
-// src/contexts/AuthContext.js
 import React, { createContext, useState, useEffect } from "react";
-import jwt_decode from "jwt-decode";
+import api from "../utils/api";
 
 export const AuthContext = createContext();
 
@@ -8,11 +7,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decodedToken = jwt_decode(token);
-      setUser(decodedToken);
-    }
+    const checkAuth = async () => {
+      try {
+        const response = await api.get("/check-auth");
+        setUser(response.data.user);
+      } catch (error) {
+        setUser(null);
+      }
+    };
+    checkAuth();
   }, []);
 
   return (

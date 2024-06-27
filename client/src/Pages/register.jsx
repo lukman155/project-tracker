@@ -1,83 +1,90 @@
-import React, { useState } from 'react';
-import './register.scss'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../utils/api";
+import "./register.scss";
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    name: '',
-    phoneNumber: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    address: '',
-    role: '',
-    lga: '',
-    state: ''
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
+  const [error, setError] = useState(null)
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log(formData);
+    try {
+      await api.post("/register", { 
+        email: formData.email, password: formData.password });
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration error:", error);
+      setError("Registration failed. Please try again.");
+    }
   };
 
   return (
     <section>
-
-    <div className='header'>
-      <h1>Register</h1>
-    </div>
-    
-    <form onSubmit={handleSubmit}>
-      <div className='dp-container'>
-        <img alt='' src='person.png' className='dp'></img>
+      <div className="header">
+        <h1>Register</h1>
       </div>
-      <label>
-        Your Name:
-        <input type="text" name="name" value={formData.name} onChange={handleChange} />
-      </label>
-      <label>
-        Phone Number:
-        <input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
-      </label>
-      <label>
-        Email:
-        <input type="email" name="email" value={formData.email} onChange={handleChange} />
-      </label>
-      <label>
-        Password:
-        <input type="password" name="password" value={formData.password} onChange={handleChange} />
-      </label>
-      <label>
-        Confirm Password:
-        <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
-      </label>
-      <label>
-        Present Address:
-        <input type="text" name="address" value={formData.address} onChange={handleChange} />
-      </label>
-      <label>
-        Role:
-        <input type="text" name="role" value={formData.role} onChange={handleChange} />
-      </label>
-      <label>
-        LGA:
-        <input type="text" name="lga" value={formData.lga} onChange={handleChange} />
-      </label>
-      <label>
-        State:
-        <input type="text" name="state" value={formData.state} onChange={handleChange} />
-      </label>
-      <button className='submit-btn' type="submit">Register</button>
-    </form>
+
+      <form onSubmit={handleSubmit}>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <div className="dp-container">
+          <img alt="" src="person.png" className="dp"></img>
+        </div>
+        <label>
+          Your Name:
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Password:
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Confirm Password:
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
+        </label>
+
+        <button className="submit-btn" type="submit">
+          Register
+        </button>
+      </form>
     </section>
   );
-};
-
+}

@@ -1,10 +1,11 @@
 from flask import Blueprint, request, jsonify, url_for
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, set_access_cookies, unset_jwt_cookies
-from .email_utils import send_reset_email, verify_reset_token
+from .email_utils import send_reset_email, verify_reset_token, send_verification_email, verify_token
 from .models import User
 from . import db
 
 main = Blueprint('main', __name__)
+
 
 @main.route('/api/register', methods=['POST'])
 def register():
@@ -23,7 +24,11 @@ def register():
     db.session.add(new_user)
     db.session.commit()
     
-    return jsonify({"msg": "User created successfully"}), 201
+    # Send verification email
+    send_verification_email(new_user)
+    
+    return jsonify({"msg": "User created successfully. Please check your email to verify your account."}), 201
+
 
 @main.route('/api/login', methods=['POST'])
 def login():
@@ -32,12 +37,15 @@ def login():
     
     user = User.query.filter_by(email=email).first()
     if user and user.check_password(password):
+        if not user.is_verified:
+            return jsonify({"msg": "Please verify your email before logging in"}), 401
         access_token = create_access_token(identity=email)
         response = jsonify({"msg": "Login successful", "user": {"email": email}})
         set_access_cookies(response, access_token)
         return response, 200
     
     return jsonify({"msg": "Bad email or password"}), 401
+
 
 @main.route('/api/logout', methods=['POST'])
 def logout():
@@ -60,6 +68,7 @@ def forgot_password():
         send_reset_email(user)
     return jsonify({"message": "If an account with that email exists, a password reset link has been sent."}), 200
 
+
 @main.route('/api/reset-password/<token>', methods=['POST'])
 def reset_password(token):
     email = verify_reset_token(token)
@@ -77,3 +86,31 @@ def reset_password(token):
     user.set_password(new_password)
     db.session.commit()
     return jsonify({"message": "Password has been reset successfully"}), 200
+
+
+@main.route('/api/resend-verification', methods=['POST'])
+def resend_verification():
+    email = request.json.get('email')
+    user = User.query.filter_by(email=email).first()
+    if user and not user.is_verified:
+        send_verification_email(user)
+        return jsonify({"message": "Verification email sent"}), 200
+    return jsonify({"message": "User not found or already verified"}), 400
+
+
+@main.route('/api/verify-email/<token>', methods=['GET'])
+def verify_email(token):
+    email = verify_token(token, 'email-verification-salt')
+    if not email:
+        return jsonify({"error": "Invalid or expired token"}), 400
+    
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    
+    if user.is_verified:
+        return jsonify({"message": "Email already verified"}), 200
+    
+    user.is_verified = True
+    db.session.commit()
+    return jsonify({"message": "Email verified successfully"}), 200

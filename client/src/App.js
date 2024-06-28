@@ -8,6 +8,7 @@ import Dashboard from "./Pages/dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 import ResetPassword from "./components/Auth/ResetPassword";
+import EmailVerification from './components/Auth/VerifyEmail';
 
 
 function App() {
@@ -17,6 +18,9 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-email" element={<EmailVerification />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route
             path="/dashboard"
             element={
@@ -33,8 +37,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
       </Router>
     </AuthProvider>

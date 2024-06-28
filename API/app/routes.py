@@ -5,7 +5,7 @@ from . import db
 
 main = Blueprint('main', __name__)
 
-@main.route('/register', methods=['POST'])
+@main.route('/api/register', methods=['POST'])
 def register():
     email = request.json.get('email', None)
     password = request.json.get('password', None)
@@ -23,7 +23,7 @@ def register():
     
     return jsonify({"msg": "User created successfully"}), 201
 
-@main.route('/login', methods=['POST'])
+@main.route('/api/login', methods=['POST'])
 def login():
     email = request.json.get('email', None)
     password = request.json.get('password', None)
@@ -37,13 +37,13 @@ def login():
     
     return jsonify({"msg": "Bad email or password"}), 401
 
-@main.route('/logout', methods=['POST'])
+@main.route('/api/logout', methods=['POST'])
 def logout():
     response = jsonify({"msg": "Logout successful"})
     unset_jwt_cookies(response)
     return response, 200
 
-@main.route('/check-auth', methods=['GET'])
+@main.route('/api/check-auth', methods=['GET'])
 @jwt_required()
 def check_auth():
     current_user = get_jwt_identity()

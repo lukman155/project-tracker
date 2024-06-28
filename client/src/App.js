@@ -6,6 +6,9 @@ import Login from "./Pages/login";
 import Register from "./Pages/register";
 import Dashboard from "./Pages/dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ForgotPassword from "./components/Auth/ForgotPassword";
+import ResetPassword from "./components/Auth/ResetPassword";
+
 
 function App() {
   return (
@@ -30,6 +33,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
       </Router>
     </AuthProvider>

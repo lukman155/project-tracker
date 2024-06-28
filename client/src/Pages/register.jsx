@@ -24,8 +24,11 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/register", { 
-        email: formData.email, password: formData.password });
+      await api.post("/register", {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
       navigate("/login");
     } catch (error) {
       console.error("Registration error:", error);

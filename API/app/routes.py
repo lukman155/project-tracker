@@ -7,6 +7,7 @@ main = Blueprint('main', __name__)
 
 @main.route('/api/register', methods=['POST'])
 def register():
+    name = request.json.get('name', None)
     email = request.json.get('email', None)
     password = request.json.get('password', None)
     
@@ -16,7 +17,7 @@ def register():
     if User.query.filter_by(email=email).first():
         return jsonify({"msg": "Email already registered"}), 400
     
-    new_user = User(email=email)
+    new_user = User(email=email, name=name)
     new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()

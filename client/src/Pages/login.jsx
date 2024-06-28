@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import api from "../utils/api";
 import "./login.scss";
@@ -47,7 +47,7 @@ const Login = () => {
           <img alt="" src="person.png" className="dp"></img>
         </div>
         <label>
-          Email:
+          Email
           <input
             type="email"
             name="email"
@@ -56,7 +56,7 @@ const Login = () => {
           />
         </label>
         <label>
-          Password:
+          Password
           <input
             type="password"
             name="password"
@@ -67,10 +67,10 @@ const Login = () => {
         <button className="submit-btn" type="submit">
           Login
         </button>
+        <p>
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
       </form>
-      <p>
-        Don't have an account? <a href="/register">Register</a>
-      </p>
     </section>
   );
 };

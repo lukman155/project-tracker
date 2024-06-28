@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../utils/api";
 import "./register.scss";
 
@@ -45,7 +45,7 @@ export default function Register() {
           <img alt="" src="person.png" className="dp"></img>
         </div>
         <label>
-          Your Name:
+          Your Name
           <input
             type="text"
             name="name"
@@ -54,7 +54,7 @@ export default function Register() {
           />
         </label>
         <label>
-          Email:
+          Email
           <input
             type="email"
             name="email"
@@ -63,7 +63,7 @@ export default function Register() {
           />
         </label>
         <label>
-          Password:
+          Password
           <input
             type="password"
             name="password"
@@ -72,7 +72,7 @@ export default function Register() {
           />
         </label>
         <label>
-          Confirm Password:
+          Confirm Password
           <input
             type="password"
             name="confirmPassword"
@@ -80,10 +80,12 @@ export default function Register() {
             onChange={handleChange}
           />
         </label>
-
         <button className="submit-btn" type="submit">
           Register
         </button>
+        <p>
+          Already registered? <Link to="/login">Login</Link>
+        </p>
       </form>
     </section>
   );

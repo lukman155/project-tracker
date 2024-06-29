@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import api from "../utils/api";
-import "./register.scss";
+import { AuthContext } from "../../contexts/AuthContext";
+import api from "../../utils/api";
+import "./auth.scss";
 
-export default function Register() {
+const Login = () => {
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
-  const [error, setError] = useState(null)
+
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,22 +25,22 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/register", {
-        name: formData.name,
+      const response = await api.post("/login", {
         email: formData.email,
         password: formData.password,
       });
-      navigate("/login");
+      setUser(response.data.user);
+      navigate("/dashboard");
     } catch (error) {
-      console.error("Registration error:", error);
-      setError("Registration failed. Please try again.");
+      console.error("Login error:", error);
+      setError("Login failed. Please try again.");
     }
   };
 
   return (
     <section>
       <div className="header">
-        <h1>Register</h1>
+        <h1>Login</h1>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -47,15 +48,6 @@ export default function Register() {
         <div className="dp-container">
           <img alt="" src="person.png" className="dp"></img>
         </div>
-        <label>
-          Your Name
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </label>
         <label>
           Email
           <input
@@ -74,22 +66,16 @@ export default function Register() {
             onChange={handleChange}
           />
         </label>
-        <label>
-          Confirm Password
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-          />
-        </label>
         <button className="submit-btn" type="submit">
-          Register
+          Login
         </button>
+        <Link to="/forgot-password">Forgot Password?</Link>
         <p>
-          Already registered? <Link to="/login">Login</Link>
+          Don't have an account? <Link to="/register">Register</Link>
         </p>
       </form>
     </section>
   );
-}
+};
+
+export default Login;

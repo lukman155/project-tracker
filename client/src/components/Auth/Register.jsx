@@ -1,18 +1,17 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
-import api from "../utils/api";
-import "./login.scss";
+import api from "../../utils/api";
+import "./auth.scss";
 
-const Login = () => {
+export default function Register() {
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
-
-  const { setUser } = useContext(AuthContext);
-  const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,20 +24,22 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("/login", { 
-        email: formData.email, password: formData.password });
-      setUser(response.data.user);
-      navigate("/dashboard");
+      await api.post("/register", {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+      navigate("/login");
     } catch (error) {
-      console.error("Login error:", error);
-      setError("Login failed. Please try again.");
+      console.error("Registration error:", error);
+      setError("Registration failed. Please try again.");
     }
   };
 
   return (
     <section>
       <div className="header">
-        <h1>Login</h1>
+        <h1>Register</h1>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -46,6 +47,15 @@ const Login = () => {
         <div className="dp-container">
           <img alt="" src="person.png" className="dp"></img>
         </div>
+        <label>
+          Your Name
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+          />
+        </label>
         <label>
           Email
           <input
@@ -64,16 +74,22 @@ const Login = () => {
             onChange={handleChange}
           />
         </label>
+        <label>
+          Confirm Password
+          <input
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
+        </label>
         <button className="submit-btn" type="submit">
-          Login
+          Register
         </button>
-        <Link to="/forgot-password">Forgot Password?</Link>
         <p>
-          Don't have an account? <Link to="/register">Register</Link>
+          Already registered? <Link to="/login">Login</Link>
         </p>
       </form>
     </section>
   );
-};
-
-export default Login;
+}

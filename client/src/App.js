@@ -1,15 +1,14 @@
-import './App.scss';
+import "./App.scss";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
-import Login from "./Pages/login";
-import Register from "./Pages/register";
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
 import Dashboard from "./Pages/dashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 import ResetPassword from "./components/Auth/ResetPassword";
-import EmailVerification from './components/Auth/VerifyEmail';
-
+import EmailVerification from "./components/Auth/VerifyEmail";
 
 function App() {
   return (

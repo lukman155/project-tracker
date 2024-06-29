@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
-import api from "../utils/api";
+import { AuthContext } from "../../contexts/AuthContext";
+import api from "../../utils/api";
+import "./auth.scss";
 
 const Logout = () => {
   const { setUser } = useContext(AuthContext);

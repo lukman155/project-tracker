@@ -1,3 +1,7 @@
+
+* {
+  transition: all .2s ease-in;
+}
 section {
   background-color: rgb(245, 247, 250);
 }
@@ -61,4 +65,8 @@ button {
   border-radius: 5px;
   color: white;
   font-size: 1em;
+}
+
+button:hover {
+  transform: scale(1.03);
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import api from "../../utils/api";
 import "./auth.scss";
+import { Link } from "react-router-dom";
 
 
 const ForgotPassword = () => {
@@ -18,20 +19,28 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div>
-      <h2>Forgot Password</h2>
+    <section>
+    <Link to={'/login'}>Back</Link>
+      <div className="header">
+        <h1>Reset Password</h1>
+      </div>
       <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          required
-        />
+        <label>
+          To reset your password, please enter your email.
+          <br/> 
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+          />
+        </label>
+
         <button type="submit">Reset Password</button>
       </form>
       {message && <p>{message}</p>}
-    </div>
+    </section>
   );
 };
 

@@ -13,22 +13,32 @@ def register():
     email = request.json.get('email', None)
     password = request.json.get('password', None)
     
+    print(f"Received registration request: name={name}, email={email}")  # Debug print
+    
     if not email or not password:
         return jsonify({"msg": "Missing email or password"}), 400
     
-    if User.query.filter_by(email=email).first():
+    existing_user = User.query.filter_by(email=email).first()
+    if existing_user:
         return jsonify({"msg": "Email already registered"}), 400
     
-    new_user = User(email=email, name=name)
-    new_user.set_password(password)
-    db.session.add(new_user)
-    db.session.commit()
+    try:
+        new_user = User(email=email, name=name)
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
+    except Exception as e:
+        print(f"Error creating user: {str(e)}")  # Debug print
+        db.session.rollback()
+        return jsonify({"msg": "Error creating user"}), 500
     
-    # Send verification email
-    send_verification_email(new_user)
+    try:
+        send_verification_email(new_user)
+    except Exception as e:
+        print(f"Error sending verification email: {str(e)}")  # Debug print
+        return jsonify({"msg": "User created but error sending verification email"}), 500
     
     return jsonify({"msg": "User created successfully. Please check your email to verify your account."}), 201
-
 
 @main.route('/api/login', methods=['POST'])
 def login():

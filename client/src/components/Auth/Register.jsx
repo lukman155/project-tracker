@@ -11,6 +11,7 @@ export default function Register() {
     confirmPassword: "",
   });
   const [error, setError] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -29,11 +30,18 @@ export default function Register() {
         email: formData.email,
         password: formData.password,
       });
-      navigate("/login");
+      setShowPopup(true);
     } catch (error) {
       console.error("Registration error:", error);
-      setError("Registration failed. Please try again.");
+      setError(
+        error.response?.data?.msg || "Registration failed. Please try again."
+      );
     }
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    navigate("/login");
   };
 
   return (
@@ -90,6 +98,16 @@ export default function Register() {
           Already registered? <Link to="/login">Login</Link>
         </p>
       </form>
+
+      {showPopup && (
+        <div className="popup">
+          <div className="popup-content">
+            <h2>Registration Successful!</h2>
+            <p>Please check your email for the verification link.</p>
+            <button onClick={handleClosePopup}>Close</button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

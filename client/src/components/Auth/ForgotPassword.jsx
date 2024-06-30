@@ -20,14 +20,14 @@ const ForgotPassword = () => {
 
   return (
     <section>
-    <Link to={'/login'}>Back</Link>
+      <Link to={"/login"}>Back</Link>
       <div className="header">
         <h1>Reset Password</h1>
       </div>
       <form onSubmit={handleSubmit}>
         <label>
-          To reset your password, please enter your email.
-          <br/> 
+          <p style={{'text-align':'center'}}>To reset your password, please enter your email.</p>
+          <br />
           <input
             type="email"
             value={email}

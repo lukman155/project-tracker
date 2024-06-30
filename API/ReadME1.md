@@ -7,7 +7,7 @@
 
 
 Database Initialization
-
+To set up the database, run the following commands
 flask db init
 flask db migrate -m "Initial migration"
 flask db upgrade

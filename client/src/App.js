@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ForgotPassword from "./components/Auth/ForgotPassword";
 import ResetPassword from "./components/Auth/ResetPassword";
 import EmailVerification from "./components/Auth/VerifyEmail";
+import Logout from "./components/Auth/Logout";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <h1>You should not be here</h1>
+                <Logout />
               </ProtectedRoute>
             }
           />

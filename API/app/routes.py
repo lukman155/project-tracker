@@ -69,7 +69,7 @@ def logout():
 @jwt_required()
 def check_auth():
     current_user = get_jwt_identity()
-    return jsonify(user=current_user), 200
+    return jsonify(user={"email": current_user}), 200
 
 
 @main.route('/api/forgot-password', methods=['POST'])

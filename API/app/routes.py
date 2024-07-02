@@ -132,21 +132,29 @@ def verify_email(token):
 @main.route('/api/projects', methods=['POST'])
 @jwt_required()
 def create_project():
-    current_user = get_jwt_identity()
-    user = User.query.filter_by(email=current_user).first()
-    
-    data = request.json
-    new_project = Project(
-        name=data['name'],
-        description=data.get('description'),
-        category=data.get('category'),
-        gps_location=data.get('gps_location'),
-        owner_id=user.id
-    )
-    db.session.add(new_project)
-    db.session.commit()
-    return jsonify({"msg": "Project created successfully", "id": new_project.id}), 201
+    try:
+        current_user = get_jwt_identity()
+        user = User.query.filter_by(email=current_user).first()
+        
+        if not user:
+            return jsonify({"msg": "User not found"}), 404
 
+        data = request.json
+        new_project = Project(
+            name=data['name'],
+            description=data.get('description'),
+            category=data.get('category'),
+            gps_location=data.get('gps_location'),
+            owner_id=user.id
+        )
+        db.session.add(new_project)
+        db.session.commit()
+        return jsonify({"msg": "Project created successfully", "id": new_project.id}), 201
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error creating project: {str(e)}")
+        return jsonify({"msg": "Error creating project", "error": str(e)}), 500
+    
 @main.route('/api/projects', methods=['GET'])
 @jwt_required()
 def get_projects():

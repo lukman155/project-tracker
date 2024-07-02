@@ -11,6 +11,8 @@ import ResetPassword from "./components/Auth/ResetPassword";
 import EmailVerification from "./components/Auth/VerifyEmail";
 import Logout from "./components/Auth/Logout";
 import ReportList from "./components/Reports/ReportList";
+import CreateProject from "./components/Projects/CreateProject";
+import ProjectList from "./components/Projects/ProjectList";
 
 function App() {
   return (
@@ -22,7 +24,12 @@ function App() {
           <Route path="/verify-email/:token" element={<EmailVerification />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
-          <Route path="/projects/:project-id/reports" element={<ReportList />} />
+          <Route path="/projects/" element={<ProjectList />} />
+          <Route path="/projects/add" element={<CreateProject />} />
+          <Route
+            path="/projects/:project-id/reports"
+            element={<ReportList />}
+          />
           <Route
             path="/dashboard"
             element={

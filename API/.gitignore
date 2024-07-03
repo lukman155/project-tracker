@@ -4,3 +4,4 @@ realm
 __pycache__
 .env
 project_tracker.db
+static

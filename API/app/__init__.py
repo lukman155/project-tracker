@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask_mail import Mail
+from flask_uploads import UploadSet, IMAGES, configure_uploads
 
 from .config import Config
 
@@ -11,7 +12,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
 mail = Mail()
-
+images = UploadSet('images', IMAGES)
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -23,8 +24,11 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     jwt.init_app(app)
     mail.init_app(app)
-    
+    configure_uploads(app, images)
+
+
+
     from .routes import main
     app.register_blueprint(main)
-    
+
     return app

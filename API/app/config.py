@@ -20,3 +20,7 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('EMAIL_USER')
     MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+
+    UPLOADED_IMAGES_DEST = 'static/project_images'
+    UPLOADED_IMAGES_URL = '/static/project_images/'
+    MAX_CONTENT_LENGTH = 5 * 1024 * 1024 # 5MB max-size

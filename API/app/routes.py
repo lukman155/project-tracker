@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify, url_for
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, set_access_cookies, unset_jwt_cookies
+from werkzeug.utils import secure_filename
 from .email_utils import send_reset_email, verify_reset_token, send_verification_email, verify_token
 from .models import User, Project, Report, UserRoles
 from datetime import datetime
-from . import db
+from . import db, images
 
 main = Blueprint('main', __name__)
 
@@ -129,6 +130,7 @@ def verify_email(token):
 
 
 # Project CRUD operations
+
 @main.route('/api/projects', methods=['POST'])
 @jwt_required()
 def create_project():
@@ -139,17 +141,34 @@ def create_project():
         if not user:
             return jsonify({"msg": "User not found"}), 404
 
-        data = request.json
+        name = request.form.get('name')
+        description = request.form.get('description')
+        category = request.form.get('category')
+        gps_location = request.form.get('gps_location')
+
+        image = request.files.get('image')
+        image_filename = None
+        if image:
+            filename = secure_filename(image.filename)
+            image_filename = images.save(image, name=filename)
+
         new_project = Project(
-            name=data['name'],
-            description=data.get('description'),
-            category=data.get('category'),
-            gps_location=data.get('gps_location'),
-            owner_id=user.id
+            name=name,
+            description=description,
+            category=category,
+            gps_location=gps_location,
+            owner_id=user.id,
+            image_filename=image_filename
         )
         db.session.add(new_project)
         db.session.commit()
-        return jsonify({"msg": "Project created successfully", "id": new_project.id}), 201
+
+        return jsonify({
+            "msg": "Project created successfully", 
+            "id": new_project.id,
+            "image_url": images.url(image_filename) if image_filename else None
+        }), 201
+
     except Exception as e:
         db.session.rollback()
         print(f"Error creating project: {str(e)}")

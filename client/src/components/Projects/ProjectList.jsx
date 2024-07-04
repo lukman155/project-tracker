@@ -23,10 +23,10 @@ const ProjectList = () => {
       <Link to={'/projects/add'}>Add project</Link>
       <div>
         {projects.map((project) => (
-          <div key={project.id}>
+          <Link to={`/projects/${project.id}`} key={project.id}>
             <h3>{project.name}</h3>
             <p>{project.description}</p>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

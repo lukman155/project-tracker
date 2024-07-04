@@ -13,6 +13,7 @@ import Logout from "./components/Auth/Logout";
 import ReportList from "./components/Reports/ReportList";
 import CreateProject from "./components/Projects/CreateProject";
 import ProjectList from "./components/Projects/ProjectList";
+import ViewProject from "./components/Projects/ViewProject";
 
 function App() {
   return (
@@ -25,9 +26,10 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/projects/" element={<ProjectList />} />
+          <Route path="/projects/:projectId" element={<ViewProject />} />
           <Route path="/projects/add" element={<CreateProject />} />
           <Route
-            path="/projects/:project-id/reports"
+            path="/projects/:id/reports"
             element={<ReportList />}
           />
           <Route

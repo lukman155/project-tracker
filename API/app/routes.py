@@ -187,7 +187,9 @@ def get_projects():
         "category": p.category,
         "gps_location": p.gps_location,
         "created_at": p.created_at,
-        "updated_at": p.updated_at
+        "updated_at": p.updated_at,
+        "image_url": images.url(p.image_filename) if p.image_filename else None,
+
     } for p in projects]), 200
 
 @main.route('/api/projects/<int:project_id>', methods=['GET'])
@@ -201,7 +203,8 @@ def get_project(project_id):
         "category": project.category,
         "gps_location": project.gps_location,
         "created_at": project.created_at,
-        "updated_at": project.updated_at
+        "updated_at": project.updated_at,
+        "image_url": images.url(project.image_filename) if project.image_filename else None,
     }), 200
 
 @main.route('/api/projects/<int:project_id>', methods=['PUT'])
@@ -253,7 +256,8 @@ def get_report(report_id):
         "status": report.status,
         "created_at": report.created_at,
         "updated_at": report.updated_at,
-        "due_date": report.due_date
+        "due_date": report.due_date,
+        "image_url": url_for(report.image_filename),
     }), 200
 
 @main.route('/api/reports/<int:report_id>', methods=['PUT'])

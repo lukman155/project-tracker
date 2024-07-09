@@ -3,6 +3,7 @@ from flask import current_app, url_for
 from itsdangerous import URLSafeTimedSerializer
 from . import mail
 
+
 def send_reset_email(user):
     token = generate_reset_token(user.email)
     msg = Message('Password Reset Request',

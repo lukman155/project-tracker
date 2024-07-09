@@ -2,6 +2,8 @@ from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
+
+# TODO: add country, state and LGA fields.
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -18,7 +20,9 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+
 from datetime import datetime
+
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,7 +35,8 @@ class Project(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     reports = db.relationship('Report', backref='project', lazy='dynamic')
     image_filename = db.Column(db.String(255))
-    
+
+
 class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
@@ -41,6 +46,7 @@ class Report(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     due_date = db.Column(db.DateTime)
+
 
 class UserRoles(db.Model):
     id = db.Column(db.Integer, primary_key=True)

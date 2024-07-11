@@ -1,3 +1,5 @@
+import os.path
+
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, make_response, jsonify
 from datetime import datetime
@@ -148,5 +150,7 @@ with app.app_context():
     db.create_all()
 
 if __name__ == '__main__':
+    import os
+    print(os.path.curdir)
     app.run(debug=True)
 
